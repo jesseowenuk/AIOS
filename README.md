@@ -4,7 +4,7 @@ Using ChatGPT to teach me about operating systems - take everything you see here
 Everything here will be highly commented and commits will sometimes include errors (though I'll try to note when they do)
 
 ## Current Status
-(16th April 2025) Qemu emulator opens and halts after printing booting from hard drive message. 
+(17th April 2025 - 19:46) The letter 'A' is now printing to the screen
 
 ## To Assemble & Run
 NOTE: I'm on a mac running Qemu, you will need this installed to run.
