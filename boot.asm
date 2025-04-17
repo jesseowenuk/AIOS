@@ -1,41 +1,23 @@
-; Tell our computer where we are in memory
-[ORG 0x7C00]
+[ORG 0x7C00]                    ; Tell our computer where we are in memory
 
-; Tell BIOS to enter teletype print mode
-mov ah, 0x0E
+    mov si, hello_message       ; Sets SI pointer to the first letter of our message
 
-; Move the letter 'H' into the AL register
-mov al, 'H'
 
-; Call the interrupt 0x10 to ask the BIOS to print the letter in the AL register to the screen
-int 0x10
+.loop:                          ; The start of a loop
+    lodsb                       ; Loads SI (first letter of our message) into AL, then moves SI onto the next letter
+    cmp al, 0                   ; Do a test to see if AL register is equal to 0
+    je .done                    ; If test above is true - we've reached the end of the message so jump to the .done label
 
-; Move the letter 'e' into the AL register
-mov al, 'e'
+    mov ah, 0x0E                ; Otherwise enter into teletype mode
+    int 0x10                    ; Call interrupt 0x10 to print the character in the AL register
+    jmp .loop                   ; Jump back to the .loop label to print the next character in the message
 
-; Call the interrupt 0x10 to ask the BIOS to print the letter in the AL register to the screen
-int 0x10
+.done:                          ; The done label - we'll jump here once the message has been printed
+    jmp $                       ; And now we'll loop forever
 
-; Move the letter 'l' into the AL register
-mov al, 'l'
-
-; Call the interrupt 0x10 to ask the BIOS to print the letter in the AL register to the screen
-int 0x10
-
-; Move the letter 'l' into the AL register
-mov al, 'l'
-
-; Call the interrupt 0x10 to ask the BIOS to print the letter in the AL register to the screen
-int 0x10
-
-; Move the letter 'o' into the AL register
-mov al, 'o'
-
-; Call the interrupt 0x10 to ask the BIOS to print the letter in the AL register to the screen
-int 0x10
-
-; Infinite loop to stay here forever!
-jmp $
+; This is our message to print - it has to end with a 0 to say it's the end of the message
+; db means define byte - it stores our message and identifies this location with hello_message
+hello_message db 'Hello from AIOS', 0
 
 ; Fill the remainder of our file with 0s (apart from the last 2 bytes)
 times 510 - ($ - $$) db 0
