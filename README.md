@@ -4,7 +4,7 @@ Using ChatGPT to teach me about operating systems - take everything you see here
 Everything here will be highly commented and commits will sometimes include errors (though I'll try to note when they do)
 
 ## Current Status
-(17th April 2025 - 20:37) simple-if experiment to try out a simple if assembly to see if a number if 5 or not.
+(17th April 2025 - 22:11) countup.asm experiment added - counts from 1 - 9 in assembly.
 
 ## To Assemble & Run
 NOTE: I'm on a mac running Qemu, you will need this installed to run.
