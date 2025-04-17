@@ -4,7 +4,7 @@ Using ChatGPT to teach me about operating systems - take everything you see here
 Everything here will be highly commented and commits will sometimes include errors (though I'll try to note when they do)
 
 ## Current Status
-(17th April 2025 - 20:16) adder experiment to print out result of adding 1 to a number (only works for numbers 0-8)
+(17th April 2025 - 20:37) simple-if experiment to try out a simple if assembly to see if a number if 5 or not.
 
 ## To Assemble & Run
 NOTE: I'm on a mac running Qemu, you will need this installed to run.
@@ -22,3 +22,8 @@ In a terminal in the same directory as boot.asm and the resulting boot file run
 ```
 qemu-system-i386 boot.bin
 ```
+
+## Experiements
+The experiements folder contains experiments which aren't part of the final product but are useful learning experiments and examples.
+
+They are assembled and run in the same way as the main project, cd into the experiements directory and change the file names as appropriate.
