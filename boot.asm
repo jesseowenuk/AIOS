@@ -4,8 +4,32 @@
 ; Tell BIOS to enter teletype print mode
 mov ah, 0x0E
 
-; Move the letter 'A' into the AL register
-mov al, 'A'
+; Move the letter 'H' into the AL register
+mov al, 'H'
+
+; Call the interrupt 0x10 to ask the BIOS to print the letter in the AL register to the screen
+int 0x10
+
+; Move the letter 'e' into the AL register
+mov al, 'e'
+
+; Call the interrupt 0x10 to ask the BIOS to print the letter in the AL register to the screen
+int 0x10
+
+; Move the letter 'l' into the AL register
+mov al, 'l'
+
+; Call the interrupt 0x10 to ask the BIOS to print the letter in the AL register to the screen
+int 0x10
+
+; Move the letter 'l' into the AL register
+mov al, 'l'
+
+; Call the interrupt 0x10 to ask the BIOS to print the letter in the AL register to the screen
+int 0x10
+
+; Move the letter 'o' into the AL register
+mov al, 'o'
 
 ; Call the interrupt 0x10 to ask the BIOS to print the letter in the AL register to the screen
 int 0x10
