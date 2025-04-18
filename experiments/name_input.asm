@@ -62,6 +62,8 @@
     mov al, 10                          ; 10 is ASCII for line feed
     int 0x10                            ; print using BIOS inteript 0x10
 
+    mov si, hello_message               ; Explicitly point SI register at hello_message
+
     ; Print out the entered name
 .print_message:
     lodsb                               ; load character from SI register into AL register and move to next character
