@@ -2,6 +2,9 @@
 
 [org 0x7C00]
 
+.setup:
+    mov di, input_buffer                ; Point the DI (desintation index) register at the input_buffer label
+
 .start:
     mov ah, 0x0E                        ; Move into the BIOS teletype mode
     mov si, welcome_prompt              ; Tell the SI register to point to the first character of our welcome message
@@ -20,6 +23,9 @@
     mov ah, 0x0E                        ; Move back into teletype mode
     int 0x10                            ; print out the character now in AL register thanks to 0x16
 
+    mov [di], al                        ; Move the character from the AL register into the input_buffer (pointed at by [di])
+    inc di                              ; Move to the next byte in the input_buffer label
+
     jmp .read_char                      ; Read the next character
 
     jmp .end                            ; If we've got here we need to end
@@ -34,8 +40,19 @@
     mov al, 10                          ; put line feed into AL register
     int 0x10                            ; print it out
 
+    mov si, input_buffer                ; Point the SI at the first byte in the input_buffer
+    call print_string                   ; Call print_string
+
+    mov ah, 0x0E                        ; Move into teletype mode
+    mov al, 13                          ; put carriage return into AL register
+    int 0x10                            ; print it out
+    mov al, 10                          ; put line feed into AL register
+    int 0x10                            ; print it out
+
     mov si, prompt                      ; point the SI register at the fist character of the prompt
     call print_string                   ; call print_string to print it out
+
+    ; Process commamnd here
 
     jmp .read_char                      ; jump back to .read_char label
 
@@ -52,6 +69,7 @@ print_string:
 
 welcome_prompt  db "Welcome to AIOS", 13, 10, 0
 prompt          db "> ", 0
+input_buffer    times 128 db 0
 
 times 510 - ($ - $$) db 0               ; Fill the remainder of the file with 0's leaving room for the 
 dw 0xAA55                               ; Magic number to make us bootable
