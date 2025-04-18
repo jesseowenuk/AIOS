@@ -4,7 +4,7 @@ Using ChatGPT to teach me about operating systems - take everything you see here
 Everything here will be highly commented and commits will sometimes include errors (though I'll try to note when they do)
 
 ## Current Status
-(17th April 2025 - 22:22) countdown.asm updated so it now prints spaces and cleaned up code.
+(18th April 2025 - 11:33) keyboard-input.asm added to experiment with keyboard input - takes one press and prints this to the screen.
 
 ## To Assemble & Run
 NOTE: I'm on a mac running Qemu, you will need this installed to run.
