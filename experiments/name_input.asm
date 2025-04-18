@@ -84,6 +84,13 @@
     jmp .print_chars                    ; jump back to the start of print_chars loop
 
 .print_uppercase:
+    ; Move to a new line
+    mov ah, 0x0E                        ; Move back into teletype mode
+    mov al, 13                          ; 13 is ASCII for carriage return
+    int 0x10                            ; print using BIOS interrupt 0x10
+    mov al, 10                          ; 10 is ASCII for line feed
+    int 0x10                            ; print using BIOS inteript 0x10
+
     mov si, uppercase_message           ; point the SI register at the first character of the uppercase_message label
 
 .print_uppercase_message:
