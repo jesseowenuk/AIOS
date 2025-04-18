@@ -36,50 +36,46 @@
 
 .print_left:
     mov si, left_arrow                  ; point the SI register at the first character of the left_arrow message
-
-.print_left_char:
-    lodsb                               ; load next character from SI register into AL register and increment to next letter
-    or al, al                           ; Test to see if we're at the null character (AL or AL will equal 0 (or false) if AL is 0)
-    jz .end                             ; if character is null terminator jump to the end
-    mov ah, 0x0E                        ; Move back into teletype mode
-    int 0x10                            ; Call BIOS interrupt 0x10 to print out the next character
-    jmp .print_left_char                ; junp back to the start of .print_left_char
-
-.print_up:
-    mov si, up_arrow                    ; point the SI register at the first character of the up_arrow message
-
-.print_up_char:
-    lodsb                               ; load next character from SI register into AL register and increment to next letter
-    or al, al                           ; Test to see if we're at the null character (AL or AL will equal 0 (or false) if AL is 0)
-    jz .end                             ; if character is null terminator jump to the end
-    mov ah, 0x0E                        ; Move back into teletype mode
-    int 0x10                            ; Call BIOS interrupt 0x10 to print out the next character
-    jmp .print_up_char                  ; junp back to the start of .print_up_char
+    call print_string                   ; call the print_string function
+    jmp .end                            ; Jump to .end label to clean up and start again
 
 .print_right:
     mov si, right_arrow                 ; point the SI register at the first character of the right_arrow message
+    call print_string                   ; call the print_string function
+    jmp .end                            ; Jump to .end label to clean up and start again
 
-.print_right_char:
-    lodsb                               ; load next character from SI register into AL register and increment to next letter
-    or al, al                           ; Test to see if we're at the null character (AL or AL will equal 0 (or false) if AL is 0)
-    jz .end                             ; if character is null terminator jump to the end
-    mov ah, 0x0E                        ; Move back into teletype mode
-    int 0x10                            ; Call BIOS interrupt 0x10 to print out the next character
-    jmp .print_right_char               ; junp back to the start of .print_right_char
+.print_up:
+    mov si, up_arrow                  ; point the SI register at the first character of the top_arrow message
+    call print_string                   ; call the print_string function
+    jmp .end                            ; Jump to .end label to clean up and start again
 
 .print_down:
     mov si, down_arrow                  ; point the SI register at the first character of the down_arrow message
-
-.print_down_char:
-    lodsb                               ; load next character from SI register into AL register and increment to next letter
-    or al, al                           ; Test to see if we're at the null character (AL or AL will equal 0 (or false) if AL is 0)
-    jz .end                             ; if character is null terminator jump to the end
-    mov ah, 0x0E                        ; Move back into teletype mode
-    int 0x10                            ; Call BIOS interrupt 0x10 to print out the next character
-    jmp .print_down_char                ; junp back to the start of .print_down_char
+    call print_string                   ; call the print_string function
+    jmp .end                            ; Jump to .end label to clean up and start again
 
 .end:
+    ; Move to a new line
+    mov ah, 0x0E                        ; Move back into teletype mode
+    mov al, 13                          ; 13 is ASCII for carriage return
+    int 0x10                            ; print using BIOS interrupt 0x10
+    mov al, 10                          ; 10 is ASCII for line feed
+    int 0x10                            ; print using BIOS inteript 0x10
+
+    jmp .read_char
+
     jmp $                               ; halt the program here by jumping indefinitley
+
+print_string:
+    lodsb                               ; load next character from SI register into AL register and increment to next letter
+    or al, al                           ; test to see if we've reached the null character
+    jz .return                          ; if we've reached the null terminating character jump to the .return label
+    mov ah, 0x0E                        ; move into teletype mode
+    int 0x10                            ; print the character in AL using BIOS interrupt 0x10
+    jmp print_string                    ; loop back to the start of print_string
+
+.return:
+    ret                                 ; return to calling function
 
 
 prompt              db "Please enter an arrow key: ", 0
