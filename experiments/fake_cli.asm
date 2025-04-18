@@ -54,6 +54,8 @@
 
     ; Process commamnd here
 
+    mov di, input_buffer                ; Reset the input_buffer to the first byte ready for a new command
+
     jmp .read_char                      ; jump back to .read_char label
 
 print_string:
