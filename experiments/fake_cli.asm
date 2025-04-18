@@ -14,6 +14,9 @@
     mov ah, 0x00                        ; Change into keyboard input mode
     int 0x16                            ; Call interrupt 0x16 to read keyboard input - wait for input
 
+    cmp al, 0x0D                        ; Compare the character entered (stored in AL register)
+    je .process_command                 ; Enter hit if AL == 0x0D, if so jump to .process_command label
+
     mov ah, 0x0E                        ; Move back into teletype mode
     int 0x10                            ; print out the character now in AL register thanks to 0x16
 
@@ -23,6 +26,18 @@
 
 .end:
     jmp $                               ; Halt the system here by looping indefinitley
+
+.process_command:
+    mov ah, 0x0E                        ; Move into teletype mode
+    mov al, 13                          ; put carriage return into AL register
+    int 0x10                            ; print it out
+    mov al, 10                          ; put line feed into AL register
+    int 0x10                            ; print it out
+
+    mov si, prompt                      ; point the SI register at the fist character of the prompt
+    call print_string                   ; call print_string to print it out
+
+    jmp .read_char                      ; jump back to .read_char label
 
 print_string:
     lodsb                               ; load next character from SI register into AL register and increment to next letter
