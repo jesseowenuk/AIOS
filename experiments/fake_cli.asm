@@ -54,6 +54,11 @@
 
     ; Process commamnd here
 
+    mov cx, 128                         ; We're going to loop 128 times
+    mov di, input_buffer                ; Set the destination index to point at the input_buffer label
+    mov al, 0                           ; Set AL register to 0 (we'll need this next)
+    rep stosb                           ; Store AL into [DI] and repear CX times (clear the input_buffer)
+
     mov di, input_buffer                ; Reset the input_buffer to the first byte ready for a new command
 
     jmp .read_char                      ; jump back to .read_char label
