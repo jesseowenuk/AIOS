@@ -1,4 +1,5 @@
 ; Name_input.asm - experiment to read a name in and print it out
+; Updated to also now print out message in capitals
 
 [org 0x7C00]
 
@@ -73,14 +74,35 @@
     jmp .print_message                  ; jump back to the start of the .print_message loop
 
 .print_name:
-    mov si, name_buffer                 ; point the SI index at the first character in the name_buffer label
+    mov si, name_buffer                 ; point the SI register at the first character in the name_buffer label
 
 .print_chars:
     lodsb                               ; load character from SI register into AL register and move to next character
     or al, al                           ; test if character is null terminator
-    jz .end                             ; is above test is null (0) jump to the .end label
+    jz .print_uppercase                 ; is above test is null (0) jump to the .print_uppercaselabel
     int 0x10                            ; otherwise use BIOS interrupt 0x10 to print out the next character
     jmp .print_chars                    ; jump back to the start of print_chars loop
+
+.print_uppercase:
+    mov si, uppercase_message           ; point the SI register at the first character of the uppercase_message label
+
+.print_uppercase_message:
+    lodsb                               ; load character from SI register into AL register and move to next character
+    or al, al                           ; Have we reached the null terminator?
+    jz .print_uppercase_name            ; if we've reached the null character jump to the .print_uppercase_name label
+    int 0x10                            ; print the next character in out message use the 0x10 interrupt
+    jmp .print_uppercase_message        ; jump back to the beginning of the loop
+
+.print_uppercase_name:
+    mov si, name_buffer                 ; point the SI index at name_buffer first character
+
+.print_uppercase_chars:
+    lodsb                               ; load character from SI register into AL register and move to next character
+    or al, al                           ; test to see if we're at the null character
+    jz .end                             ; if we've reached the end of this string (nuill terminator) jump to the .end label
+    sub al, 32                          ; Subtract 32 from the AL register (changing the letter from lowercase to uppercase)
+    int 0x10                            ; Call BIOS interrupt 0x10 to print the character to the screen
+    jmp .print_uppercase_chars         ; jump back to the .print_uppercase_chars to print the next character
 
 .end:
     ; Move to a new line
@@ -92,8 +114,9 @@
 
     jmp $                               ; halt execution by jumping here indefinitley
 
-prompt          db "Enter your name: ", 0
-hello_message   db "Hello, ", 0
+prompt              db "Enter your name: ", 0
+hello_message       db "Hello, ", 0
+uppercase_message   db "HELLO, ", 0
 name_buffer  times 51 db 0              ; Buffer for up to characters plus 0
 
 times 510 - ($ - $$) db 0               ; Fill the remainder of the file with 0's leaving room for the 
