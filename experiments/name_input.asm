@@ -107,9 +107,16 @@
     lodsb                               ; load character from SI register into AL register and move to next character
     or al, al                           ; test to see if we're at the null character
     jz .end                             ; if we've reached the end of this string (nuill terminator) jump to the .end label
+    cmp al, 90                          ; Compare AL to 90
+    jbe .print_lowercase_char           ; if we're equal or before 90 jump to the .print_lowercase_char label
+
     sub al, 32                          ; Subtract 32 from the AL register (changing the letter from lowercase to uppercase)
     int 0x10                            ; Call BIOS interrupt 0x10 to print the character to the screen
-    jmp .print_uppercase_chars         ; jump back to the .print_uppercase_chars to print the next character
+    jmp .print_uppercase_chars          ; jump back to the .print_uppercase_chars to print the next character
+
+.print_lowercase_char:
+    int 0x10                            ; print the lowercase character using 0x10 interrupt
+    jmp .print_uppercase_chars          ; jump back up to the start of the loop to print the next char
 
 .end:
     ; Move to a new line
