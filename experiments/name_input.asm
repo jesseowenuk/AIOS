@@ -20,14 +20,36 @@
     mov ah, 0x00                        ; Move into keyboard input mode
     int 0x16                            ; Call BIOS interrupt 0x16 to read from the keyboard
 
-    mov ah, 0x0E                        ; Move back into teletype mode
-    int 0x10                            ; Echo the typed character to the screen with interrupt 0x10
-
     cmp al, 13                          ; Is the key entered 'enter' (ASCII 13)?
     je .done_typing                     ; If entered key is the 'enter' key jump to .done_typing label
 
+    cmp al, 8                           ; Is the key entered the 'backspace' (ASCII 8)?
+    je .handle_backspace                ; It is - so jump to the .handle_backspace label
+
+    mov ah, 0x0E                        ; Move back into teletype mode
+    int 0x10                            ; Echo the typed character to the screen with interrupt 0x10
+
     stosb                               ; Store the value in the AL register into the DI register and then advance this by 1
     loop .read_loop                     ; decrement the CX register and if not at 0 jump back to the start of .read_loop
+    jmp .done_typing                    ; jump to the .done_typing label
+
+.handle_backspace:
+    cmp di, name_buffer                 ; Compare the DI register to the name_buffer
+    jbe .read_loop                      ; If we're at or before the buffer start, ignore (jbe = jump if below or equal)
+
+    dec di                              ; Move buffer pointer back by 1
+    inc cx                              ; increment the CX register so we can access the same character slot again
+
+    ; Erase character from the screen (move back, print space, move back again)
+    mov ah, 0x0E                        ; Move back into teletype mode
+    mov al, 8                           ; Move backspace character into the AL register
+    int 0x10                            ; Print the backspace character (move backwards on the screen)
+    mov al, ' '                         ; Put space character into the AL register
+    int 0x10                            ; Print the space character out with BIOS interrupt 0x10
+    mov al, 8                           ; Move backspace character into the AL register (again)
+    int 0x10                            ; Print out the backspace again 
+
+    jmp .read_loop                      ; Jump back to the start of the .read_loop
 
 .done_typing:
     mov al, 0                           ; Add the null terminator to the AL register

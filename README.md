@@ -4,10 +4,10 @@ Using ChatGPT to teach me about operating systems - take everything you see here
 Everything here will be highly commented and commits will sometimes include errors (though I'll try to note when they do)
 
 ## Current Status
-(18th April 2025 - 12:10) name_input.asm added to experiment with more keyboard input - reads in a name and prints out a hello message
+(18th April 2025 - 12:25) name_input.asm updated to include backspace support
 
 ## To Assemble & Run
-NOTE: I'm on a mac running Qemu, you will need this installed to run.
+NOTE: I'm on a mac running Nasm and Qemu, you will need this installed to run.
 
 ### To Assemble
 In a terminal in the same directory as boot.asm run
