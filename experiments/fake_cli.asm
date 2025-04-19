@@ -63,7 +63,6 @@
 
     mov si, msg_unknown                 ; Point the SI index at msg_unknown
     call print_string                   ; Call print_string to print out unknown command message
-    jmp .read_char                      ; Jump back to .read_char label
 
     mov cx, 128                         ; We're going to loop 128 times
     mov di, input_buffer                ; Set the destination index to point at the input_buffer label
@@ -71,22 +70,42 @@
     rep stosb                           ; Store AL into [DI] and repear CX times (clear the input_buffer)
 
     mov di, input_buffer                ; Reset the input_buffer to the first byte ready for a new command
-
-    jmp .read_char                      ; jump back to .read_char label
+    jmp .read_char                      ; Jump back to .read_char label
 
 .handle_help:
     mov si, msg_help                    ; Point the SI index at msg_help
     call print_string                   ; Call print_string function to print out help message
+
+    mov cx, 128                         ; We're going to loop 128 times
+    mov di, input_buffer                ; Set the destination index to point at the input_buffer label
+    mov al, 0                           ; Set AL register to 0 (we'll need this next)
+    rep stosb                           ; Store AL into [DI] and repear CX times (clear the input_buffer)
+
+    mov di, input_buffer                ; Reset the input_buffer to the first byte ready for a new command
     jmp .read_char                      ; Jump back to .read_char label
 
 .handle_echo:
     mov si, msg_echo                    ; Point the SI index at msg_echo
     call print_string                   ; Call print_string function to print out echo message
+
+    mov cx, 128                         ; We're going to loop 128 times
+    mov di, input_buffer                ; Set the destination index to point at the input_buffer label
+    mov al, 0                           ; Set AL register to 0 (we'll need this next)
+    rep stosb                           ; Store AL into [DI] and repear CX times (clear the input_buffer)
+
+    mov di, input_buffer                ; Reset the input_buffer to the first byte ready for a new command
     jmp .read_char                      ; Jump back to .read_char label
 
 .handle_about:
     mov si, msg_about                   ; Point the SI index at msg_about
     call print_string                   ; Call print_string function to print out about message
+
+    mov cx, 128                         ; We're going to loop 128 times
+    mov di, input_buffer                ; Set the destination index to point at the input_buffer label
+    mov al, 0                           ; Set AL register to 0 (we'll need this next)
+    rep stosb                           ; Store AL into [DI] and repear CX times (clear the input_buffer)
+
+    mov di, input_buffer                ; Reset the input_buffer to the first byte ready for a new command
     jmp .read_char                      ; Jump back to .read_char label
 
 print_string:
