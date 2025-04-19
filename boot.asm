@@ -73,7 +73,17 @@ start:
     mov si, msg_disk                    ; Point SI to start of disk success message
     call print_string                   ; Call print_string to print it out
 
-    jmp 0x8000:0000
+    ; Setup segment and jump to our kernel
+    cli                                 ; Clear interrupts while we switch
+    xor ax, ax                          ; Reset the AX register
+    mov ds, ax                          ; Reset the DS segment register
+    mov es, ax                          ; Reset the ES segment register
+    mov fs, ax                          ; Reset the FS segment register
+    mov gs, ax                          ; Reset the GS segment register
+    mov ss, ax                          ; Reset the SS segment register
+    mov sp, 0x7C00                      ; Reset stack pointer
+
+    jmp 0x0000:0x8000
 
 end:
     jmp $       

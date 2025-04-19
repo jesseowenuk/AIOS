@@ -1,6 +1,6 @@
 ; kernel.asm - initial kernel file
 
-[org 0x0000]                                ; Our kernel will be loaded at 0x8000
+[org 0x8000]                                ; Our kernel will be loaded at 0x8000
 
 start:
     mov ah, 0x0E                            ; Move into teletype mode
