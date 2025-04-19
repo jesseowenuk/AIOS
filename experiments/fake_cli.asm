@@ -63,6 +63,7 @@
 
     mov si, msg_unknown                 ; Point the SI index at msg_unknown
     call print_string                   ; Call print_string to print out unknown command message
+    jmp .read_char                      ; Jump back to .read_char label
 
     mov cx, 128                         ; We're going to loop 128 times
     mov di, input_buffer                ; Set the destination index to point at the input_buffer label
@@ -76,14 +77,17 @@
 .handle_help:
     mov si, msg_help                    ; Point the SI index at msg_help
     call print_string                   ; Call print_string function to print out help message
+    jmp .read_char                      ; Jump back to .read_char label
 
 .handle_echo:
     mov si, msg_echo                    ; Point the SI index at msg_echo
     call print_string                   ; Call print_string function to print out echo message
+    jmp .read_char                      ; Jump back to .read_char label
 
 .handle_about:
     mov si, msg_about                   ; Point the SI index at msg_about
     call print_string                   ; Call print_string function to print out about message
+    jmp .read_char                      ; Jump back to .read_char label
 
 print_string:
     lodsb                               ; load next character from SI register into AL register and increment to next letter
