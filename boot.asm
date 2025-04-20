@@ -39,9 +39,9 @@ start:
     add di, 2                           ; Move forward 2 bytes
 
     ; Set the transfer buffer address (byte 4 - 7)
-    mov word [es:di], 0x8000            ; Low byte of the address
+    mov word [es:di], 0x0000            ; Low byte of the address
     add di, 2                           ; Move forward 2 bytes
-    mov word [es:di], 0x00              ; High byte of the address
+    mov word [es:di], 0x1000            ; High byte of the address
     add di, 2                           ; Move forward 2 bytes
 
     ; Set the lower 32 bits of LBA (byte 8 - 11)
@@ -83,7 +83,7 @@ start:
     mov ss, ax                          ; Reset the SS segment register
     mov sp, 0x7C00                      ; Reset stack pointer
 
-    jmp 0x0000:0x8000
+    jmp 0x1000:0x0000                   ; Jump to the 1MB kernel address
 
 end:
     jmp $       

@@ -1,6 +1,16 @@
 ; kernel.asm - initial kernel file
+[org 0x100000]                               ; Our kernel will be loaded at 0x100000
 
-[org 0x8000]                                ; Our kernel will be loaded at 0x8000
+setup:
+    cli                                     ; Make sure interrupts are disabled
+    xor ax, ax                              ; Reset AX register
+    mov es, ax                              ; Reset ES segment register
+    mov ss, ax                              ; Reset SS segment register
+    mov di, ax                              ; Reset DI index register
+    mov sp, 0x7C00                          ; set to low level in memory
+
+    mov ax, 0x1000                          ; Set AX register to 0x1000
+    mov ds, ax                              ; Set the DS segment at the same area
 
 start:
     mov ah, 0x0E                            ; Move into teletype mode

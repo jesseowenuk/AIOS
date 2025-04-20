@@ -53,4 +53,4 @@ clean:
 
 # Run in Qemu
 run:
-	qemu-system-i386 -hda $(OUTPUT)
+	qemu-system-i386 -hda $(OUTPUT) -monitor stdio
