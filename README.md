@@ -6,21 +6,23 @@ Everything here will be highly commented and commits will sometimes include erro
 ## To Assemble & Run
 NOTE: I'm on a mac running Nasm and Qemu, you will need this installed to run.
 
-### To Assemble
-In a terminal in the same directory as boot.asm run
+To assemble in the root directory run
 
 ```
-nasm boot.asm -o boot.bin
+make
 ```
 
-### To Run
-In a terminal in the same directory as boot.asm and the resulting boot file run
-
+To run in the root directory run
 ```
-qemu-system-i386 boot.bin
+make run
+```
+
+To clean up in the root directory run
+```
+make clean
 ```
 
 ## Experiements
 The experiements folder contains experiments which aren't part of the final product but are useful learning experiments and examples.
 
-They are assembled and run in the same way as the main project, cd into the experiements directory and change the file names as appropriate.
+They are assembled and run in the same way as the main project, cd into the experiements directory and then call nasm and then Qemu on them.
